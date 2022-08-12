@@ -1,0 +1,11 @@
+create sequence hibernate_sequence start 1 increment 1;
+create table cities (id int4 not null, code varchar(4), name varchar(256), primary key (id));
+create table cities_parking_facilities (city_id int4 not null, parking_facilities_id varchar(255) not null);
+create table parking_facilities (type varchar(31) not null, id varchar(255) not null, available_capacity int4, capacity int4, name varchar(256), city_id int4, primary key (id));
+create table vehicles (type varchar(31) not null, id varchar(255) not null, is_parked boolean, city_id int4, parking_facility_id varchar(255), primary key (id));
+alter table if exists cities_parking_facilities add constraint UK_dkvi1e44hlquxfj65e4nuc5kg unique (parking_facilities_id);
+alter table if exists cities_parking_facilities add constraint FKiubqbtd6r1blcpmpswjbkp6q3 foreign key (parking_facilities_id) references parking_facilities;
+alter table if exists cities_parking_facilities add constraint FK9to7wjnytf0wkv8tml7jyp4h5 foreign key (city_id) references cities;
+alter table if exists parking_facilities add constraint FKijxect4rskyf90lmc6nwpo1i4 foreign key (city_id) references cities;
+alter table if exists vehicles add constraint FKpaqcwy6h2oqllm394sviar6h3 foreign key (city_id) references cities;
+alter table if exists vehicles add constraint FK301yqyhf6afyk0uk1w24c2t40 foreign key (parking_facility_id) references parking_facilities;
